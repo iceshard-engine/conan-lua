@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+    - v*
+
+jobs:
+
+  deploy-build-ubuntu:
+    name: Deploy (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup conan
+      run: |
+        pip3 install setuptools
+        pip3 install conan
+        ~/.local/bin/conan remote add conan-iceshard https://conan.iceshard.net/
+    - name: Export
+      run: |
+        ~/.local/bin/conan create . lua/5.1.5@iceshard/stable
+    - name: Deploy
+      run: |
+        ~/.local/bin/conan user iceshard -r conan-iceshard -p ${{ secrets.CONAN_PASSWORD }}
+        ~/.local/bin/conan upload -r lua/5.1.5@iceshard/stable --all
+
+  deploy-build-windows:
+    name: Deploy (Windows)
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup conan
+      run: |
+        pip3 install setuptools
+        pip3 install conan
+        conan remote add conan-iceshard https://conan.iceshard.net/
+    - name: Export
+      run: |
+        conan create . lua/5.1.5@iceshard/stable
+    - name: Deploy
+      run: |
+        conan user iceshard -r conan-iceshard -p ${{ secrets.CONAN_PASSWORD }}
+        conan upload -r conan-iceshard lua/5.1.5@iceshard/stable --all
