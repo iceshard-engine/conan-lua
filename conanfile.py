@@ -18,7 +18,7 @@ class LuaConan(ConanFile):
     exports_sources = ["premake5.lua"]
 
     # Iceshard conan tools
-    python_requires = "conan-iceshard-tools/0.6.0@iceshard/dev"
+    python_requires = "conan-iceshard-tools/0.6.0@iceshard/stable"
     python_requires_extend = "conan-iceshard-tools.IceTools"
 
     # Initialize the package
