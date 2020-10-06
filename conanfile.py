@@ -18,7 +18,7 @@ class LuaConan(ConanFile):
     exports_sources = ["premake5.lua"]
 
     # Iceshard conan tools
-    python_requires = "conan-iceshard-tools/0.6.0@iceshard/stable"
+    python_requires = "conan-iceshard-tools/0.6.2@iceshard/stable"
     python_requires_extend = "conan-iceshard-tools.IceTools"
 
     # Initialize the package
@@ -62,7 +62,7 @@ class LuaConan(ConanFile):
                 self.copy("luac", "bin/{}".format(config), os.path.join(build_dir, config), keep_path=True)
             self.copy("*.a", "lib", build_dir, keep_path=True)
             if self.options.shared:
-                self.copy("*.so", "bin", build_dir, keep_path=True)
+                self.copy("*.so", "lib", build_dir, keep_path=True)
 
 
     def package_info(self):
