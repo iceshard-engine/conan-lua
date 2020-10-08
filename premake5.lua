@@ -23,6 +23,13 @@ workspace "Lua"
     filter { "Release" }
         optimize "On"
 
+    filter { "system:linux" }
+        defines { "DLUA_USE_POSIX", "LUA_USE_DLOPEN" }
+        links { 'dl' }
+
+    filter { "system:windows", "options:shared" }
+        defines { "LUA_BUILD_AS_DLL" }
+
     project "lualib"
         kind(iif(_OPTIONS.shared, "SharedLib", "StaticLib"))
         language "C"
@@ -40,9 +47,6 @@ workspace "Lua"
 
         removefiles { "src/luac.c", "src/lua.c", "src/print.c" }
 
-        filter { "kind:SharedLib", "action:vs*" }
-            defines { "LUA_BUILD_AS_DLL" }
-
     project "luac"
         kind "ConsoleApp"
 
@@ -58,7 +62,6 @@ workspace "Lua"
             "src/lua.c",
         }
 
-
     project "lua"
         kind "ConsoleApp"
 
@@ -73,8 +76,3 @@ workspace "Lua"
         files {
             "src/lua.c"
         }
-
-        if _OPTIONS.shared then
-            filter { "action:vs*" }
-                defines { "LUA_BUILD_AS_DLL" }
-        end

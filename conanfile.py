@@ -28,9 +28,7 @@ class LuaConan(ConanFile):
 
     # Build both the debug and release builds
     def ice_build(self):
-        copyfile("../premake5.lua", "premake5.lua")
         self.ice_generate()
-
         if self.settings.compiler == "Visual Studio":
             self.ice_build_msbuild("Lua.sln", ["Debug", "Release"])
 
@@ -69,8 +67,10 @@ class LuaConan(ConanFile):
         self.cpp_info.debug.libdirs = [ "lib/Debug" ]
         self.cpp_info.release.libdirs = [ "lib/Release" ]
         self.cpp_info.bindirs = [ "bin/Release" ]
-        self.cpp_info.libdirs = []
+        self.cpp_info.libdirs = [ ]
         self.cpp_info.libs = [ "lua51" ]
 
         # Enviroment info
-        self.env_info.path.append(os.path.join(self.package_folder, "bin/Release"))
+        self.env_info.PATH.append(os.path.join(self.package_folder, "bin/Release"))
+        if self.settings.os == "Linux":
+            self.env_info.LD_LIBRARY_PATH.append(os.path.join(self.package_folder, "lib/Release"))
