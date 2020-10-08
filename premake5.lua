@@ -24,10 +24,10 @@ workspace "Lua"
         optimize "On"
 
     filter { "system:linux" }
-        defines { "DLUA_USE_POSIX", "LUA_USE_DLOPEN" }
+        defines { "LUA_USE_POSIX", "LUA_USE_DLOPEN" }
         links { 'dl' }
 
-    filter { "system:windows", "options:shared" }
+    filter { "system:windows", "options:shared=true" }
         defines { "LUA_BUILD_AS_DLL" }
 
     project "lualib"
@@ -59,7 +59,7 @@ workspace "Lua"
         }
 
         removefiles {
-            "src/lua.c",
+            "src/lua.c"
         }
 
     project "lua"
