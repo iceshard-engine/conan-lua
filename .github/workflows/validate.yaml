@@ -16,7 +16,7 @@ jobs:
         ~/.local/bin/conan config install https://github.com/iceshard-engine/conan-config.git
     - name: Export
       run: |
-        ~/.local/bin/conan create . lua/5.1.5@iceshard/stable --profile clang-9.0.0-linux-x86_64
+        ~/.local/bin/conan create . lua/5.1.5@iceshard/stable --profile clang-9.0-linux-x86_64
     - name: Success
       run: |
         echo 'Validation success'
@@ -30,7 +30,7 @@ jobs:
       run: |
         pip3 install setuptools
         pip3 install conan
-        conan remote add conan-iceshard https://conan.iceshard.net/
+        ~/.local/bin/conan config install https://github.com/iceshard-engine/conan-config.git
     - name: Export
       run: |
         conan create . lua/5.1.5@iceshard/stable
