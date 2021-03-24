@@ -16,14 +16,11 @@ jobs:
       run: |
         pip3 install setuptools
         pip3 install conan
-        ~/.local/bin/conan remote add conan-iceshard https://conan.iceshard.net/
-        ~/.local/bin/conan profile new --detect default
-        ~/.local/bin/conan profile update settings.compiler=clang default
-        ~/.local/bin/conan profile update settings.compiler.version=9 default
-        ~/.local/bin/conan profile update settings.compiler.libcxx=libstdc++11 default
+        ~/.local/bin/conan config install https://github.com/iceshard-engine/conan-config.git
     - name: Export
       run: |
-        ~/.local/bin/conan create . lua/5.1.5@iceshard/stable
+        ~/.local/bin/conan create . lua/5.1.5@iceshard/stable --profile clang-9.0-linux-x86_64
+        ~/.local/bin/conan create . lua/5.1.5@iceshard/stable --profile clang-10.0-linux-x86_64
     - name: Deploy
       run: |
         ~/.local/bin/conan user iceshard -r conan-iceshard -p ${{ secrets.CONAN_PASSWORD }}
@@ -38,7 +35,7 @@ jobs:
       run: |
         pip3 install setuptools
         pip3 install conan
-        conan remote add conan-iceshard https://conan.iceshard.net/
+        conan config install https://github.com/iceshard-engine/conan-config.git
     - name: Export
       run: |
         conan create . lua/5.1.5@iceshard/stable
